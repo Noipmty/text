@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact App</title>
+</head>
+<body>
+<h1>Personal Contact App</h1>
+<form id="contactForm">
+    <input type="text" id="name" placeholder="Name">
+    <input type="text" id="phone" placeholder="Phone">
+    <input type="text" id="address" placeholder="Address">
+    <hr>
+    <button type="button" onclick="addContact()">Add Contact</button>
+    <button type="button" onclick="addContact()">Delete Contact</button>
+    <button type="button" onclick="addContact()">Query Contact </button>
+</form>
+<div id="status"></div>
+
+<script>
+    function addContact() {
+        var name = document.getElementById('name').value;
+        var phone = document.getElementById('phone').value;
+        var address = document.getElementById('address').value;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'ContactServlet', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById('status').innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send('action=add&name=' + encodeURIComponent(name) + '&phone=' + encodeURIComponent(phone) + '&address=' + encodeURIComponent(address));
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+@startuml
+class Contact {
+        -int id
+        -string name
+        -string address
+        -string phone
+        +Contact(String name, String address, String phone)
+        +String toString() : string
+        +int getId() : int
+        +String getName() : string
+        +String getAddress() : string
+        +String getPhone() : string
+    }
+
+    class ContactApp {
+        -JTextField nameField
+        -JTextField phoneField
+        -JTextField addressField
+        -JList~Contact~ contactList
+        -DefaultListModel~Contact~ listModel
+        -JLabel statusLabel
+        +ContactApp()
+        +addContact() : void
+        +queryContact() : void
+        +deleteContact() : void
+        +loadContacts() : void
+        +showStatus(String message) : void
+    }
+
+    class DatabaseManager {
+        +addContact(String name, String phone, String address) : void
+        +deleteContact(String name) : void
+        +queryContact(String name) : void
+    }
+
+    class DBUtil {
+        -string URL
+        -string USER
+        -string PASSWORD
+        +getConnection() : Connection
+    }
+
+    class ContactServlet {
+        +doPost(HttpServletRequest request, HttpServletResponse response) : void
+        +doGet(HttpServletRequest request, HttpServletResponse response) : void
+    }
+
+    ContactApp "1" -- "1" DefaultListModel : contains
+    DefaultListModel "1" -- "*" Contact : contains
+    ContactApp "1" -- "1" JList : contains
+    JList "1" -- "*" Contact : elements
+    ContactApp "1" -- "1" JLabel : contains
+    ContactApp "1" -- DBUtil : uses
+    DBUtil "1" -- "*" Connection : returns
+    DatabaseManager "1" -- DBUtil : uses
+    ContactServlet "1" -- DatabaseManager : uses
+@enduml
